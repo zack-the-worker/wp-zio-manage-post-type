@@ -12,16 +12,16 @@ if (!defined('ABSPATH')) {
 <div class="wrap">
     <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
     
-    <?php settings_errors('zio_mpt_messages'); ?>
+    <?php settingsesc_html_errors('zio_mpt_messages'); ?>
 
-    <h2><?php _e('Existing Post Types', ZIO_TEXT_DOMAIN); ?></h2>
+    <h2><?php esc_html_e('Existing Post Types', 'zio-manage-post-type'); ?></h2>
     <table class="wp-list-table widefat fixed striped">
         <thead>
             <tr>
-                <th><?php _e('Name', ZIO_TEXT_DOMAIN); ?></th>
-                <th><?php _e('Label', ZIO_TEXT_DOMAIN); ?></th>
-                <th><?php _e('Public', ZIO_TEXT_DOMAIN); ?></th>
-                <th><?php _e('Hierarchical', ZIO_TEXT_DOMAIN); ?></th>
+                <th><?php esc_html_e('Name', 'zio-manage-post-type'); ?></th>
+                <th><?php esc_html_e('Label', 'zio-manage-post-type'); ?></th>
+                <th><?php esc_html_e('Public', 'zio-manage-post-type'); ?></th>
+                <th><?php esc_html_e('Hierarchical', 'zio-manage-post-type'); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -48,40 +48,40 @@ if (!defined('ABSPATH')) {
         </tbody>
     </table>
 
-    <h2><?php _e('Create New Post Type', ZIO_TEXT_DOMAIN); ?></h2>
+    <h2><?php esc_html_e('Create New Post Type', 'zio-manage-post-type'); ?></h2>
     <form method="post" action="">
         <?php wp_nonce_field('zio_mpt_create_post_type'); ?>
         <table class="form-table">
             <tr>
                 <th scope="row">
-                    <label for="post_type_name"><?php _e('Post Type Name', ZIO_TEXT_DOMAIN); ?></label>
+                    <label for="post_type_name"><?php esc_html_e('Post Type Name', 'zio-manage-post-type'); ?></label>
                 </th>
                 <td>
                     <input type="text" id="post_type_name" name="post_type_data[name]" class="regular-text" required />
-                    <p class="description"><?php _e('Lowercase letters and underscores only (e.g. my_post_type)', ZIO_TEXT_DOMAIN); ?></p>
+                    <p class="description"><?php esc_html_e('Lowercase letters and underscores only (e.g. my_post_type)', 'zio-manage-post-type'); ?></p>
                 </td>
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="post_type_label"><?php _e('Label', ZIO_TEXT_DOMAIN); ?></label>
+                    <label for="post_type_label"><?php esc_html_e('Label', 'zio-manage-post-type'); ?></label>
                 </th>
                 <td>
                     <input type="text" id="post_type_label" name="post_type_data[label]" class="regular-text" required />
-                    <p class="description"><?php _e('Human-readable name (e.g. My Post Type)', ZIO_TEXT_DOMAIN); ?></p>
+                    <p class="description"><?php esc_html_e('Human-readable name (e.g. My Post Type)', 'zio-manage-post-type'); ?></p>
                 </td>
             </tr>
             <tr>
                 <th scope="row">
-                    <label for="post_type_public"><?php _e('Public', ZIO_TEXT_DOMAIN); ?></label>
+                    <label for="post_type_public"><?php esc_html_e('Public', 'zio-manage-post-type'); ?></label>
                 </th>
                 <td>
                     <label>
                         <input type="checkbox" id="post_type_public" name="post_type_data[public]" value="1" />
-                        <?php _e('Make this post type public', ZIO_TEXT_DOMAIN); ?>
+                        <?php esc_html_e('Make this post type public', 'zio-manage-post-type'); ?>
                     </label>
                 </td>
             </tr>
         </table>
-        <?php submit_button(__('Create Post Type', ZIO_TEXT_DOMAIN)); ?>
+        <?php submit_button(__('Create Post Type', 'zio-manage-post-type')); ?>
     </form>
 </div>

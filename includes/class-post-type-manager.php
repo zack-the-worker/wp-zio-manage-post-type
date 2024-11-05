@@ -46,15 +46,15 @@ class Post_Type_Manager {
             'nonce' => wp_create_nonce('zio_mpt_nonce'),
             'post_types' => $this->get_available_post_types(),
             'i18n' => array(
-            	'changePostType' => __('Change post type', ZIO_TEXT_DOMAIN),
-            	'selectNewType' =>  __('Select New Post Type', ZIO_TEXT_DOMAIN),
-            	'cancel' =>  __('Cancel', ZIO_TEXT_DOMAIN),
-            	'apply' =>  __('Apply', ZIO_TEXT_DOMAIN),
-            	'noPostsSelected' =>  __('No posts selected', ZIO_TEXT_DOMAIN),
-            	'processing' =>  __('Processing...', ZIO_TEXT_DOMAIN),
-            	'errorOccurred' =>  __('An error occurred', ZIO_TEXT_DOMAIN),
-            	'creating' =>  __('Creating...', ZIO_TEXT_DOMAIN),
-            	'createPostType' =>  __('Create Post Type', ZIO_TEXT_DOMAIN),
+            	'changePostType' => esc_html(__('Change post type', 'zio-manage-post-type')),
+            	'selectNewType' =>  esc_html(__('Select New Post Type', 'zio-manage-post-type')),
+            	'cancel' =>  esc_html(__('Cancel', 'zio-manage-post-type')),
+            	'apply' =>  esc_html(__('Apply', 'zio-manage-post-type')),
+            	'noPostsSelected' =>  esc_html(__('No posts selected', 'zio-manage-post-type')),
+            	'processing' =>  esc_html(__('Processing...', 'zio-manage-post-type')),
+            	'errorOccurred' =>  esc_html(__('An error occurred', 'zio-manage-post-type')),
+            	'creating' =>  esc_html(__('Creating...', 'zio-manage-post-type')),
+            	'createPostType' =>  esc_html(__('Create Post Type', 'zio-manage-post-type')),
             ),
         ));
     }
@@ -81,13 +81,14 @@ class Post_Type_Manager {
     }
 
     public function add_post_type_filter() {
+    	check_admin_referer('zio_mpt_create_post_type');
         global $typenow;
         if ($typenow == 'post') {
             $post_types = $this->get_available_post_types();
-            $current = isset($_GET['post_type_filter']) ? $_GET['post_type_filter'] : '';
+            $current = sanitize_text_field(isset($_GET['post_type_filter']) ? wp_unslash($_GET['post_type_filter']) : '');
             
             echo '<select name="post_type_filter">';
-            echo '<option value="">' . __('All Post Types', ZIO_TEXT_DOMAIN) . '</option>';
+            echo '<option value="">' . esc_html(__('All Post Types', 'zio-manage-post-type')) . '</option>';
             
             foreach ($post_types as $name => $label) {
                 printf(
@@ -103,10 +104,11 @@ class Post_Type_Manager {
     }
 
     public function filter_posts_by_post_type($query) {
+    	check_admin_referer('zio_mpt_create_post_type');
         global $pagenow;
         
         if (is_admin() && $pagenow == 'edit.php' && isset($_GET['post_type_filter'])) {
-            $post_type_filter = sanitize_text_field($_GET['post_type_filter']);
+            $post_type_filter = sanitize_text_field(wp_unslash($_GET['post_type_filter']));
             
             if (!empty($post_type_filter)) {
                 $query->query_vars['post_type'] = $post_type_filter;
@@ -115,7 +117,7 @@ class Post_Type_Manager {
     }
 
     public function register_bulk_action($bulk_actions) {
-        $bulk_actions['change_post_type'] = __('Change post type', ZIO_TEXT_DOMAIN);
+        $bulk_actions['change_post_type'] = esc_html(__('Change post type', 'zio-manage-post-type'));
         return $bulk_actions;
     }
 
@@ -131,14 +133,14 @@ class Post_Type_Manager {
         check_ajax_referer('zio_mpt_nonce', 'nonce');
 
         if (!current_user_can('edit_posts')) {
-            wp_send_json_error(__('Permission denied', ZIO_TEXT_DOMAIN));
+            wp_send_json_error(esc_html(__('Permission denied', 'zio-manage-post-type')));
         }
 
         $post_ids = isset($_POST['post_ids']) ? array_map('intval', $_POST['post_ids']) : array();
-        $new_post_type = isset($_POST['new_post_type']) ? sanitize_text_field($_POST['new_post_type']) : '';
+        $new_post_type = isset($_POST['new_post_type']) ? sanitize_text_field(wp_unslash($_POST['new_post_type'])) : '';
 
         if (empty($post_ids) || empty($new_post_type)) {
-            wp_send_json_error(__('Invalid parameters', ZIO_TEXT_DOMAIN));
+            wp_send_json_error(esc_html(__('Invalid parameters', 'zio-manage-post-type')));
         }
 
         foreach ($post_ids as $post_id) {

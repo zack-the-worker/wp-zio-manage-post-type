@@ -4,6 +4,7 @@
  * Description: Allow users to manage and change post types
  * Version: 1.1.0
  * Author: Zack The Worker
+ * License: GPLv2 or later
  * Author URI: https://github.com/zack-the-worker/wp-zio-manage-post-type
  * Text Domain: zio-manage-post-type
  */
@@ -16,7 +17,6 @@ if (!defined('ABSPATH')) {
 define('ZIO_MPT_VERSION', '1.1.0');
 define('ZIO_MPT_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('ZIO_MPT_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('ZIO_TEXT_DOMAIN', 'zio-manage-post-type');
 // Autoload classes
 spl_autoload_register(function ($class) {
     $prefix = 'ZIO_MPT\\';

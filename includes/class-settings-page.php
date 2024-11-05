@@ -11,10 +11,10 @@ class Settings_Page {
 
     public function add_menu_page() {
         add_options_page(
-            __('ZIO Manage Post Type', ZIO_TEXT_DOMAIN),
-            __('ZIO Post Types', ZIO_TEXT_DOMAIN),
+            __('ZIO Manage Post Type', 'zio-manage-post-type'),
+            __('ZIO Post Types', 'zio-manage-post-type'),
             'manage_options',
-            ZIO_TEXT_DOMAIN,
+            'zio-manage-post-type',
             array($this, 'render_settings_page')
         );
     }
@@ -28,10 +28,11 @@ class Settings_Page {
     }
 
     public function render_settings_page() {
+        check_admin_referer('zio_mpt_create_post_type');
         if (!current_user_can('manage_options')) {
             return;
         }
-
+        
         if (isset($_POST['submit']) && isset($_POST['post_type_data'])) {
             $this->handle_post_type_creation();
         }
@@ -42,7 +43,7 @@ class Settings_Page {
     private function handle_post_type_creation() {
         check_admin_referer('zio_mpt_create_post_type');
 
-        $post_type_data = $_POST['post_type_data'];
+        $post_type_data = wp_unslash(isset($_POST['post_type_data']) ? sanitize_text_field(wp_unslash($_POST['post_type_data'])) : 'post');
         $name = sanitize_key($post_type_data['name']);
         $label = sanitize_text_field($post_type_data['label']);
         
@@ -50,7 +51,7 @@ class Settings_Page {
             add_settings_error(
                 'zio_mpt_messages',
                 'zio_mpt_message',
-                __('Post type name and label are required.', ZIO_TEXT_DOMAIN),
+                __('Post type name and label are required.', 'zio-manage-post-type'),
                 'error'
             );
             return;
@@ -84,7 +85,7 @@ class Settings_Page {
 	        add_settings_error(
 	            'zio_mpt_messages',
 	            'zio_mpt_message',
-	            __('Post type created successfully.', ZIO_TEXT_DOMAIN),
+	            __('Post type created successfully.', 'zio-manage-post-type'),
 	            'success'
 	        );
 	    }
@@ -92,7 +93,7 @@ class Settings_Page {
 	    	add_settings_error(
 	            'zio_mpt_messages',
 	            'zio_mpt_message',
-	            __('Post type already exists.', ZIO_TEXT_DOMAIN),
+	            __('Post type already exists.', 'zio-manage-post-type'),
 	            'error'
 	        );
 	    }
